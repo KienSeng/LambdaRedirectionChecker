@@ -22,11 +22,16 @@ public class RedirectionCheckerLambda implements RequestHandler<Object, LinkedHa
 
         JsonObject json = new JsonConverter().convertStringToJson(jsonMap);
 
-        String url = new JsonReader().getString(json, "start_url");
-        String destUrl = new JsonReader().getString(json, "destination_url");
-
+        String url = new JsonReader().getString(json, "url");
         RedirectionCheckerCore redirection = new RedirectionCheckerCore(new UrlConnector(url), "Redirection of " + url);
-        redirection.setRedirectedLocation(destUrl);
+
+        try{
+            String destUrl = new JsonReader().getString(json, "destUrl");
+            redirection.setRedirectedLocation(destUrl);
+        }catch(Exception e){
+            context.getLogger().log("Parameter 'destUrl' not found, skip verification for redirected URL");
+        }
+
         redirection.startRedirectionCheck();
         return redirection.getRedirectionResult();
     }
