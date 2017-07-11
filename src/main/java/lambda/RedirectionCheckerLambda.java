@@ -1,12 +1,11 @@
 package lambda;
 
 import Models.Factory.UrlConnector.UrlConnector;
-import Models.JsonProcessor.JsonConverter;
-import Models.LambdaInputProcessor.ApiGatewayInputProcessor;
+import Models.JsonFactory.JsonConverter;
+import Models.LambdaInputProcessor.ApiGatewayRequestProcessor;
 import Models.RedirectionChecker.RedirectionCheckerCore;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.util.LinkedHashMap;
@@ -22,7 +21,7 @@ public class RedirectionCheckerLambda implements RequestHandler<Object, LinkedHa
                 + json.toString() + "\n"
                 + "=================================================\n\n");
 
-        ApiGatewayInputProcessor processedOutput = new ApiGatewayInputProcessor(json);
+        ApiGatewayRequestProcessor processedOutput = new ApiGatewayRequestProcessor(json);
 
         String url = processedOutput.getQueryParameters("url");
         context.getLogger().log("URL: " + url);
