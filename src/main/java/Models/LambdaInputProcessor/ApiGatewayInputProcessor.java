@@ -9,23 +9,26 @@ import com.google.gson.JsonObject;
 public class ApiGatewayInputProcessor {
     JsonObject json;
 
-    public ApiGatewayInputProcessor(String json){
-        this.json = new JsonConverter().convertStringToJson(json);
+    public ApiGatewayInputProcessor(JsonObject json){
+        this.json = json;
     }
 
     public JsonObject getBody(){
         return json.get("body").getAsJsonObject();
     }
 
-    public String getQueryParameters(String key, String returnType){
-        return json.get("queryStringParameters").getAsJsonObject().get(key).getAsString();
+    public String getQueryParameters(String key){
+//        return json.get("queryStringParameters").getAsJsonObject().get(key).getAsString();
+        return json.get("params").getAsJsonObject()
+                .get("querystring").getAsJsonObject()
+                .get(key).getAsString();
     }
 
-    public String getPathParameters(String key, String returnType){
+    public String getPathParameters(String key){
         return json.get("pathParameters").getAsJsonObject().get(key).getAsString();
     }
 
-    public String getHeadersParameters(String key, String returnType){
+    public String getHeadersParameters(String key){
         return json.get("headers").getAsJsonObject().get(key).getAsString();
     }
 
